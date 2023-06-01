@@ -13,4 +13,5 @@ public interface IPart extends Remote {
     public String addSubcomponent(Part part, Integer quantity) throws RemoteException;
     public int getSubcomponetsSize() throws RemoteException;
     public String getRepositoryName() throws RemoteException;
+    public String listSubcomponents() throws RemoteException;
 }

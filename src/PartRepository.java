@@ -17,7 +17,7 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
     public String listAll() throws RemoteException {
         String list = "";
         if(_repository.size() > 0) {
-            list += "------Lista de Parts do Repositorio-------\n\n";
+            list += "------Lista de Parts do Repositorio-------\n";
             for (int i = 0; i < _repository.size(); i++) {
                 IPart p = _repository.get(i);
                 list += "\n"+p.ToString()+"\n"+

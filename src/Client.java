@@ -64,8 +64,9 @@ public class Client {
                     case "getp": {
                         System.out.println("Entre com o codigo da part");
                         String code = sc.nextLine();
-                        part = repository.getPartByCode(UUID.fromString(code));
-                        if(part != null) {
+                        IPart p = repository.getPartByCode(UUID.fromString(code));
+                        if(p != null) {
+                            part = p;
                             System.out.println(part.getName()+" se tornou a part corrente!!");
                         }else{
                             System.out.println("Não foi possivel encontrar uma part no repositorio "+repository.getName()+" com esse codigo");

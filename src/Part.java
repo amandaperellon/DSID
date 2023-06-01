@@ -29,15 +29,7 @@ public class Part extends UnicastRemoteObject implements IPart {
     @Override
     public String ToString() throws RemoteException {
         String text = "Part ID: "+Code+"\nPart Name: "+Name+"\nPart Description: "+Description+"\n";
-        if(Subcomponents.size() > 0){
-            text += "Subcomponents:\n";
-            for (Map.Entry<IPart,Integer> s : Subcomponents.entrySet()) {
-                text += "Part Name: "+s.getKey().getName()+"\n";
-                text += "Quantity: "+s.getValue()+"\n";
-            }
-        }else{
-            text += "Part primitiva\n";
-        }
+        text += listSubcomponents();
         return text;
     }
 
@@ -85,5 +77,20 @@ public class Part extends UnicastRemoteObject implements IPart {
     @Override
     public String getRepositoryName() throws RemoteException {
         return RepositoryName;
+    }
+
+    @Override
+    public String listSubcomponents() throws RemoteException {
+        String text = "";
+        if(Subcomponents.size() > 0){
+            text += "Subcomponents:\n";
+            for (Map.Entry<IPart,Integer> s : Subcomponents.entrySet()) {
+                text += "Part Name: "+s.getKey().getName()+"\n";
+                text += "Quantity: "+s.getValue()+"\n\n";
+            }
+        }else{
+            text += "Part primitiva\n";
+        }
+        return text;
     }
 }
