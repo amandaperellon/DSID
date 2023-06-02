@@ -41,7 +41,7 @@ public class Client {
 
     public static void commands() {
         while(true) {
-            System.out.println("Entre com o comando");
+            System.out.print("Entre com o comando: ");
             String option = sc.nextLine();
             try {
                 switch (option) {
@@ -49,69 +49,83 @@ public class Client {
                         startServer();
                     }break;
                     case "listp": {
-                        System.out.println(repository.listAll());
+                        System.out.print(repository.listAll());
                     }
                     break;
                     case "addp": {
-                        System.out.println("Entre com o nome da part");
+                        System.out.print("Entre com o nome da part: ");
                         String name  = sc.nextLine();
-                        System.out.println("Entre com a descricao da part");
+                        System.out.print("Entre com a descricao da part: ");
                         String description = sc.nextLine();
                         UUID codigo = repository.createPart(name, description, subcomponents);
-                        System.out.println("Part com codigo "+codigo+" criada com sucesso!!!");
+                        System.out.print("Part com codigo "+codigo+" criada com sucesso!!!");
                     }
                     break;
                     case "getp": {
-                        System.out.println("Entre com o codigo da part");
+                        System.out.print("Entre com o codigo da part: ");
                         String code = sc.nextLine();
                         IPart p = repository.getPartByCode(UUID.fromString(code));
                         if(p != null) {
                             part = p;
-                            System.out.println(part.getName()+" se tornou a part corrente!!");
+                            System.out.print(part.getName()+" se tornou a part corrente!!");
                         }else{
-                            System.out.println("Não foi possivel encontrar uma part no repositorio "+repository.getName()+" com esse codigo");
+                            System.out.print("Não foi possivel encontrar uma part no repositorio "+repository.getName()+" com esse codigo");
                         }
                     }break;
                     case "showp": {
                         if(part != null) {
-                            System.out.println(part.ToString());
+                            System.out.print(part.ToString());
                         }else{
-                            System.out.println("Nao ha nenhuma part corrente nesse momento");
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
                         }
                     }break;
                     case "addsubpart":{
-                        System.out.println("Entre com a quantidade que deseja adicionar");
+                        System.out.print("Entre com a quantidade que deseja adicionar: ");
                         int quantity = Integer.parseInt(sc.nextLine());
                         if(part != null) {
                             subcomponents.put(part, quantity);
-                            System.out.println("Subcomponent adicionado com sucesso!!");
+                            System.out.print("Subcomponent adicionado com sucesso!!");
                         }else{
-                            System.out.println("Nao ha nenhuma part corrente nesse momento");
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
                         }
                     }break;
                     case "clearlist":{
                         subcomponents.clear();
-                        System.out.println("Lista de subcomponentes envaziada com sucesso!!");
+                        System.out.print("Lista de subcomponentes esvaziada com sucesso!!");
                     }break;
                     case "help":{
                         menu();
                     }break;
                     case "inforep":{
-                        System.out.println("Nome do repositorio: "+repository.getName()+"\n"+
+                        System.out.print("Nome do repositorio: "+repository.getName()+"\n"+
                         "Quantidade de parts: "+repository.countParts());
                     }break;
                     case "inforeppart":{
                         if(part != null) {
-                            System.out.println("Nome do repositorio que se encontra a peca corrente: "+part.getRepositoryName());
+                            System.out.print("Nome do repositorio que se encontra a peca corrente: "+part.getRepositoryName());
                         }else{
-                            System.out.println("Nao ha nenhuma part corrente nesse momento");
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
                         }
                     }break;
                     case "subpartinfo":{
                         if(part != null) {
-                            System.out.println(repository.verifySubcomponents(part));
+                            System.out.print(repository.verifySubcomponents(part));
                         }else{
-                            System.out.println("Nao ha nenhuma part corrente nesse momento");
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
+                        }
+                    }break;
+                    case "countsubpart":{
+                        if(part != null) {
+                            System.out.print("Numero de subcomponents: "+part.getSubcomponetsSize());
+                        }else{
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
+                        }
+                    }break;
+                    case "listsubpart":{
+                        if(part != null) {
+                            System.out.print(part.listSubcomponents());
+                        }else{
+                            System.out.print("Nao ha nenhuma part corrente nesse momento");
                         }
                     }break;
                     case "quit": {
@@ -119,7 +133,7 @@ public class Client {
                         return;
                     }
                     default:{
-                        System.out.println("Nao ha um comando com esse nome, entre com o comando help que ira aparecer os comandos possiveis");
+                        System.out.print("Nao ha um comando com esse nome, entre com o comando help que ira aparecer os comandos possiveis");
                     }
                 }
                 System.out.println("\n");
@@ -142,6 +156,8 @@ public class Client {
                 "inforep: Mostra as informacoes sobre o repositorio\n"+
                 "inforeppart: Mostra o nome do repositorio que a peca corrente se encontra\n"+
                 "subpartinfo: Mostra se a peca corrente é primitiva ou agregada\n"+
+                "countsubpart: Numero de subcomponentes da part corrente\n"+
+                "listsubpart: Lista os subcomponentes da part corrente"+
                 "quit: Encerra a execucao\n");
     }
 }

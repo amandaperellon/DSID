@@ -59,10 +59,6 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
 
     @Override
     public String verifySubcomponents(IPart part) throws RemoteException {
-        if(part.getSubcomponetsSize() > 0){
-            return "Peca agregada";
-        }else{
-            return "Peca primitiva";
-        }
+        return part.verifySubcomponentsType();
     }
 }

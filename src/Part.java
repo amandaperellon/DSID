@@ -83,14 +83,24 @@ public class Part extends UnicastRemoteObject implements IPart {
     public String listSubcomponents() throws RemoteException {
         String text = "";
         if(Subcomponents.size() > 0){
-            text += "Subcomponents:\n";
+            text += "Subcomponents:\n\n";
             for (Map.Entry<IPart,Integer> s : Subcomponents.entrySet()) {
                 text += "Part Name: "+s.getKey().getName()+"\n";
-                text += "Quantity: "+s.getValue()+"\n\n";
+                text += "Quantity: "+s.getValue()+"\n";
+                text += verifySubcomponentsType()+"\n----------\n";
             }
         }else{
             text += "Part primitiva\n";
         }
         return text;
+    }
+
+    @Override
+    public String verifySubcomponentsType() throws RemoteException {
+        if(Subcomponents.size() > 0){
+            return "Part agregada";
+        }else{
+            return "Part primitiva";
+        }
     }
 }
