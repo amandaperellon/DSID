@@ -4,8 +4,8 @@ import java.util.*;
 
 public class PartRepository extends UnicastRemoteObject implements IPartRepository {
 
-    public LinkedList<IPart> _repository;
-    public String Name;
+    private final LinkedList<IPart> _repository;
+    private final String Name;
 
     public PartRepository(String name) throws RemoteException{
         super();
@@ -18,10 +18,9 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
         String list = "";
         if(_repository.size() > 0) {
             list += "------Lista de Parts do Repositorio-------\n";
-            for (int i = 0; i < _repository.size(); i++) {
-                IPart p = _repository.get(i);
-                list += "\n"+p.ToString()+"\n"+
-                "=======||=======\n";
+            for (IPart p : _repository) {
+                list += "\n" + p.ToString() + "\n" +
+                        "=======||=======\n";
             }
         }else{
             list = "Repositorio esta vazio";
@@ -38,9 +37,8 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
 
     @Override
     public IPart getPartByCode(UUID code) throws RemoteException {
-        for(int i=0; i<_repository.size(); i++){
-            IPart part = _repository.get(i);
-            if(part.getCode().equals(code)){
+        for (IPart part : _repository) {
+            if (part.getCode().equals(code)) {
                 return part;
             }
         }

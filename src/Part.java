@@ -3,11 +3,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class Part extends UnicastRemoteObject implements IPart {
-    public UUID Code;
-    public String Name;
-    public String Description;
-    public HashMap<IPart, Integer> Subcomponents;
-    public String RepositoryName;
+    private UUID Code;
+    private String Name;
+    private String Description;
+    private final HashMap<IPart, Integer> Subcomponents;
+    private String RepositoryName;
 
     public Part(String name, String description) throws RemoteException {
         super();
@@ -70,7 +70,7 @@ public class Part extends UnicastRemoteObject implements IPart {
     }
 
     @Override
-    public int getSubcomponetsSize() throws RemoteException {
+    public int getSubcomponentsSize() throws RemoteException {
         return Subcomponents.size();
     }
 
