@@ -3,27 +3,26 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class PartRepository extends UnicastRemoteObject implements IPartRepository {
-
-    private final LinkedList<IPart> _repository;
+    private final LinkedList<IPart> Repository;
     private final String Name;
 
     public PartRepository(String name) throws RemoteException{
         super();
-        _repository = new LinkedList<>();
+        Repository = new LinkedList<>();
         Name = name;
     }
 
     @Override
     public String listAll() throws RemoteException {
         String list = "";
-        if(_repository.size() > 0) {
-            list += "------Lista de Parts do Repositorio-------\n";
-            for (IPart p : _repository) {
+        if(Repository.size() > 0) {
+            list += "------Lista de Peças do Repositório-------\n";
+            for (IPart p : Repository) {
                 list += "\n" + p.ToString() + "\n" +
                         "=======||=======\n";
             }
         }else{
-            list = "Repositorio esta vazio";
+            list = "Repositório vazio";
         }
         return list;
     }
@@ -31,14 +30,14 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
     @Override
     public UUID createPart(String name, String description, HashMap<IPart, Integer> subcomponents) throws RemoteException {
         IPart part = new Part(name, description, subcomponents, Name);
-        _repository.add(part);
-        return part.getCode();
+        Repository.add(part);
+        return part.getId();
     }
 
     @Override
     public IPart getPartByCode(UUID code) throws RemoteException {
-        for (IPart part : _repository) {
-            if (part.getCode().equals(code)) {
+        for (IPart part : Repository) {
+            if (part.getId().equals(code)) {
                 return part;
             }
         }
@@ -47,7 +46,7 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
 
     @Override
     public int countParts() throws RemoteException {
-        return _repository.size();
+        return Repository.size();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
     }
 
     @Override
-    public String verifySubcomponents(IPart part) throws RemoteException {
-        return part.verifySubcomponentsType();
+    public String verifySubpart(IPart part) throws RemoteException {
+        return part.verifySubpartType();
     }
 }

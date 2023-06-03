@@ -3,39 +3,34 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class Part extends UnicastRemoteObject implements IPart {
-    private UUID Code;
+    private UUID Id;
     private String Name;
     private String Description;
-    private final HashMap<IPart, Integer> Subcomponents;
+    private final HashMap<IPart, Integer> Subpart;
     private String RepositoryName;
 
-    public Part(String name, String description) throws RemoteException {
+    public Part(String name, String description, HashMap<IPart, Integer> subpart, String repositoryName) throws RemoteException {
         super();
-        Code = UUID.randomUUID();
+        Id = UUID.randomUUID();
         Name = name;
         Description = description;
-        Subcomponents = new HashMap<>();
-    }
-
-    public Part(String name, String description, HashMap<IPart, Integer> subcomponents, String repositoryName) throws RemoteException {
-        super();
-        Code = UUID.randomUUID();
-        Name = name;
-        Description = description;
-        Subcomponents = subcomponents;
+        Subpart = subpart;
         RepositoryName = repositoryName;
     }
 
     @Override
     public String ToString() throws RemoteException {
-        String text = "Part ID: "+Code+"\nPart Name: "+Name+"\nPart Description: "+Description+"\n";
-        text += listSubcomponents();
+        String text = "Id: "+Id+
+                "\nNome: "+Name+
+                "\nDescrição: "+Description+
+                "\n"+
+                listSubpart();
         return text;
     }
 
     @Override
-    public UUID getCode() throws RemoteException {
-        return Code;
+    public UUID getId() throws RemoteException {
+        return Id;
     }
 
     @Override
@@ -49,8 +44,8 @@ public class Part extends UnicastRemoteObject implements IPart {
     }
 
     @Override
-    public void setCode(UUID code) throws RemoteException {
-        Code = code;
+    public void setId(UUID id) throws RemoteException {
+        Id = id;
     }
 
     @Override
@@ -64,14 +59,14 @@ public class Part extends UnicastRemoteObject implements IPart {
     }
 
     @Override
-    public String addSubcomponent(Part part, Integer quantity) throws RemoteException {
-        Subcomponents.put(part, quantity);
+    public String addSubpart(Part part, Integer quantity) throws RemoteException {
+        Subpart.put(part, quantity);
         return this.toString();
     }
 
     @Override
-    public int getSubcomponentsSize() throws RemoteException {
-        return Subcomponents.size();
+    public int getSubpartSize() throws RemoteException {
+        return Subpart.size();
     }
 
     @Override
@@ -80,27 +75,27 @@ public class Part extends UnicastRemoteObject implements IPart {
     }
 
     @Override
-    public String listSubcomponents() throws RemoteException {
+    public String listSubpart() throws RemoteException {
         String text = "";
-        if(Subcomponents.size() > 0){
-            text += "Subcomponents:\n\n";
-            for (Map.Entry<IPart,Integer> s : Subcomponents.entrySet()) {
-                text += "Part Name: "+s.getKey().getName()+"\n";
-                text += "Quantity: "+s.getValue()+"\n";
-                text += verifySubcomponentsType()+"\n----------\n";
+        if(Subpart.size() > 0){
+            text += "Sub-peça:\n";
+            for (Map.Entry<IPart,Integer> s : Subpart.entrySet()) {
+                text += s.getKey().toString()+"\n"+
+                        "Quantidade: "+s.getValue()+"\n"+
+                        verifySubpartType()+"\n----------\n";
             }
         }else{
-            text += "Part primitiva\n";
+            text += "Sub-peça: Primitiva\n";
         }
         return text;
     }
 
     @Override
-    public String verifySubcomponentsType() throws RemoteException {
-        if(Subcomponents.size() > 0){
-            return "Part agregada";
-        }else{
-            return "Part primitiva";
+    public String verifySubpartType() throws RemoteException {
+        if (Subpart.size() > 0) {
+            return "Peça Agregada";
+        }else {
+            return "Peça Primitiva";
         }
     }
 }

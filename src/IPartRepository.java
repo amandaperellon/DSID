@@ -9,5 +9,5 @@ public interface IPartRepository extends Remote {
     IPart getPartByCode(UUID code) throws RemoteException;
     int countParts() throws RemoteException;
     String getName() throws RemoteException;
-    String verifySubcomponents(IPart part) throws RemoteException;
+    String verifySubpart(IPart part) throws RemoteException;
 }

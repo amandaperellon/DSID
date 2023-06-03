@@ -7,16 +7,15 @@ public class Server {
     public Server(){
         try{
             Scanner sc = new Scanner(System.in);
-            System.out.println("Entre com o nome do server");
+            System.out.print("Entre com o nome do servidor: ");
             String name = sc.nextLine();
-            System.out.println("Entre com a porta do Server");
+            System.out.print("Entre com a porta do servidor: ");
             int port = Integer.parseInt(sc.nextLine());
 
-            //PartRepository stub = (PartRepository) UnicastRemoteObject.exportObject(repository, 1099);
             IPartRepository repository = new PartRepository(name);
             LocateRegistry.createRegistry(port);
             Naming.rebind("rmi://localhost/"+name, repository);
-            System.out.println("Server up");
+            System.out.println("Servidor "+name+" iniciado com sucesso");
         }catch (Exception ex){
             ex.printStackTrace();
         }
