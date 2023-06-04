@@ -1,3 +1,8 @@
+package client;
+
+import server.IPart;
+import server.IPartRepository;
+
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
@@ -19,6 +24,7 @@ public class Client {
             commands();
         }catch(Exception e){
             e.printStackTrace();
+            System.exit(0);
         }
     }
 
@@ -31,7 +37,9 @@ public class Client {
             repository = (IPartRepository) registry.lookup(repositoryName);
             System.out.println("Conectado com o servidor: " + repositoryName);
         }catch(Exception e){
+            System.out.println("Não foi possível se conectar com o servidor");
             e.printStackTrace();
+            System.exit(0);
         }
     }
 
@@ -53,7 +61,7 @@ public class Client {
                         System.out.print("Entre com a descrição da peça: ");
                         String description = sc.nextLine();
                         UUID id = repository.createPart(name, description, subpart);
-                        System.out.print("Peça com id " + id + " criada com sucesso!!!");
+                        System.out.print("Peça com id " + id + " criada com sucesso");
                     }
                     case "getp" -> {
                         System.out.print("Entre com o id da peça: ");
@@ -61,7 +69,7 @@ public class Client {
                         IPart p = repository.getPartByCode(UUID.fromString(id));
                         if (p != null) {
                             part = p;
-                            System.out.print(part.getName() + " se tornou a peça corrente!!");
+                            System.out.print(part.getName() + " se tornou a peça corrente");
                         } else {
                             System.out.print("Não foi possível encontrar uma peça no repositório " + repository.getName() + " com esse id");
                         }
@@ -70,7 +78,7 @@ public class Client {
                         if (part != null) {
                             System.out.print(part.ToString());
                         } else {
-                            System.out.print("Nao há nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
                     case "addsubpart" -> {
@@ -80,7 +88,7 @@ public class Client {
                             subpart.put(part, quantity);
                             System.out.print("Sub-peças adicionado com sucesso!!");
                         } else {
-                            System.out.print("Nao ha nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
                     case "clearlist" -> {
@@ -98,28 +106,30 @@ public class Client {
                         if (part != null) {
                             System.out.print("Nome do repositório que se encontra a peça corrente: " + part.getRepositoryName());
                         } else {
-                            System.out.print("Nao ha nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
-                    case "subpartinfo" -> {
+                    case "partinfo" -> {
                         if (part != null) {
                             System.out.print(repository.verifySubpart(part));
                         } else {
-                            System.out.print("Nao ha nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
                     case "countsubpart" -> {
                         if (part != null) {
-                            System.out.print("Numero de Sub-peças: " + part.getSubpartSize());
+                            System.out.println("Numero de sub-peças: " + part.getSubpartSize());
+                            System.out.println("Número de sub-peças primitivas: "+part.getSubpartPrimitiveSize());
+                            System.out.println("Número de sub-peças agregadas: "+part.getSubpartAggregatedSize());
                         } else {
-                            System.out.print("Nao ha nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
                     case "listsubpart" -> {
                         if (part != null) {
                             System.out.print(part.listSubpart());
                         } else {
-                            System.out.print("Nao ha nenhuma peça corrente nesse momento");
+                            System.out.print("Não há nenhuma peça corrente nesse momento");
                         }
                     }
                     case "quit" -> {
@@ -127,12 +137,13 @@ public class Client {
                         return;
                     }
                     default ->
-                        System.out.print("Nao ha um comando com esse nome, entre com o comando help que ira aparecer os comandos possiveis");
+                        System.out.print("Não há um comando com esse nome, entre com o comando help para mostrar os comandos possíveis");
 
                 }
                 System.out.println("\n");
             } catch (Exception e) {
                 e.printStackTrace();
+                System.exit(0);
             }
         }
     }
@@ -150,8 +161,8 @@ public class Client {
                 addp: Adiciona uma peça ao repositório corrente
                 inforep: Mostra as informações sobre o repositório
                 inforeppart: Mostra o nome do repositório que a peça corrente se encontra
-                subpartinfo: Mostra se a peça corrente é primitiva ou agregada
-                countsubpart: Nmero de sub-peças da peça corrente
+                partinfo: Mostra se a peça corrente é primitiva ou agregada
+                countsubpart: Número de sub-peças da peça corrente
                 listsubpart: Lista os sub-peças da peça corrente
                 quit: Encerra a execução
                 -------------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+package server;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -20,12 +22,11 @@ public class Part extends UnicastRemoteObject implements IPart {
 
     @Override
     public String ToString() throws RemoteException {
-        String text = "Id: "+Id+
+        return "Id: "+Id+
                 "\nNome: "+Name+
                 "\nDescrição: "+Description+
                 "\n"+
                 listSubpart();
-        return text;
     }
 
     @Override
@@ -76,18 +77,20 @@ public class Part extends UnicastRemoteObject implements IPart {
 
     @Override
     public String listSubpart() throws RemoteException {
-        String text = "";
         if(Subpart.size() > 0){
-            text += "Sub-peça:\n";
-            for (Map.Entry<IPart,Integer> s : Subpart.entrySet()) {
-                text += s.getKey().toString()+"\n"+
-                        "Quantidade: "+s.getValue()+"\n"+
-                        verifySubpartType()+"\n----------\n";
+            String text = "Sub-peça:\n";
+            for (Map.Entry<IPart,Integer> subpart : Subpart.entrySet()) {
+                text = text.concat("Id: "+subpart.getKey().getId()+
+                        "\nNome: "+subpart.getKey().getName()+
+                        "\nDescrição: "+subpart.getKey().getDescription()+
+                        "\nQuantidade: "+subpart.getValue()+"\n"+
+                        subpart.getKey().verifySubpartType()+
+                        "\n----------------------------------------\n");
             }
+            return text;
         }else{
-            text += "Sub-peça: Primitiva\n";
+           return "Sub-peça: Primitiva\n";
         }
-        return text;
     }
 
     @Override
@@ -97,5 +100,27 @@ public class Part extends UnicastRemoteObject implements IPart {
         }else {
             return "Peça Primitiva";
         }
+    }
+
+    @Override
+    public int getSubpartPrimitiveSize() throws RemoteException {
+        int count = 0;
+        for (Map.Entry<IPart,Integer> subpart : Subpart.entrySet()) {
+            if(subpart.getKey().getSubpartSize() == 0){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public int getSubpartAggregatedSize() throws RemoteException {
+        int count = 0;
+        for (Map.Entry<IPart,Integer> subpart : Subpart.entrySet()) {
+            if(subpart.getKey().getSubpartSize() > 0){
+                count++;
+            }
+        }
+        return count;
     }
 }

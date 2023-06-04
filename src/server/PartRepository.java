@@ -1,3 +1,5 @@
+package server;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -14,17 +16,16 @@ public class PartRepository extends UnicastRemoteObject implements IPartReposito
 
     @Override
     public String listAll() throws RemoteException {
-        String list = "";
         if(Repository.size() > 0) {
-            list += "------Lista de Peças do Repositório-------\n";
+            String list = "------Lista de Peças do Repositório-------\n";
             for (IPart p : Repository) {
-                list += "\n" + p.ToString() + "\n" +
-                        "=======||=======\n";
+                list = list.concat("\n"+p.ToString()+"\n"
+                        +"=========================||=======================\n");
             }
+            return list;
         }else{
-            list = "Repositório vazio";
+            return "Repositório vazio";
         }
-        return list;
     }
 
     @Override

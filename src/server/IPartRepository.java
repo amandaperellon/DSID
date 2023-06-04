@@ -1,3 +1,7 @@
+package server;
+
+import server.IPart;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;

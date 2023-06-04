@@ -1,3 +1,5 @@
+package server;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.UUID;
@@ -15,4 +17,6 @@ public interface IPart extends Remote {
     String getRepositoryName() throws RemoteException;
     String listSubpart() throws RemoteException;
     String verifySubpartType() throws RemoteException;
+    int getSubpartPrimitiveSize() throws RemoteException;
+    int getSubpartAggregatedSize() throws RemoteException;
 }
