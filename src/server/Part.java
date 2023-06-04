@@ -5,11 +5,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class Part extends UnicastRemoteObject implements IPart {
-    private UUID Id;
-    private String Name;
-    private String Description;
+    private final UUID Id;
+    private final String Name;
+    private final String Description;
     private final HashMap<IPart, Integer> Subpart;
-    private String RepositoryName;
+    private final String RepositoryName;
 
     public Part(String name, String description, HashMap<IPart, Integer> subpart, String repositoryName) throws RemoteException {
         super();
@@ -42,27 +42,6 @@ public class Part extends UnicastRemoteObject implements IPart {
     @Override
     public String getDescription() throws RemoteException {
         return Description;
-    }
-
-    @Override
-    public void setId(UUID id) throws RemoteException {
-        Id = id;
-    }
-
-    @Override
-    public void setName(String name) throws RemoteException {
-        Name = name;
-    }
-
-    @Override
-    public void setDescription(String description) throws RemoteException {
-        Description = description;
-    }
-
-    @Override
-    public String addSubpart(Part part, Integer quantity) throws RemoteException {
-        Subpart.put(part, quantity);
-        return this.toString();
     }
 
     @Override
