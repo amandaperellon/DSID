@@ -30,6 +30,8 @@ public class Client {
 
     public static void startServer(){
         try {
+            System.out.print("Entre com a ip do servidor: ");
+            host = sc.nextLine();
             System.out.print("Entre com o nome do server que deseja se conectar: ");
             String repositoryName = sc.nextLine();
             System.out.print("Entre com a porta do servidor: ");
