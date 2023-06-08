@@ -1,7 +1,7 @@
 package server;
 
-import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 
 public class Server {
@@ -15,11 +15,12 @@ public class Server {
             int port = Integer.parseInt(sc.nextLine());
 
             IPartRepository repository = new PartRepository(name);
-            LocateRegistry.createRegistry(port);
-            Naming.rebind("rmi://localhost/"+name, repository);
+            Registry registry = LocateRegistry.createRegistry(port);
+            registry.bind(name, repository);
             System.out.println("Servidor "+name+" iniciado com sucesso");
         }catch (Exception ex){
-            ex.printStackTrace();
+            System.out.println("Erro ao iniciar o servidor: "+ex.getMessage());
+            System.exit(0);
         }
     }
 

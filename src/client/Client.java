@@ -32,13 +32,14 @@ public class Client {
         try {
             System.out.print("Entre com o nome do server que deseja se conectar: ");
             String repositoryName = sc.nextLine();
+            System.out.print("Entre com a porta do servidor: ");
+            int port = Integer.parseInt(sc.nextLine());
 
-            Registry registry = LocateRegistry.getRegistry(host);
+            Registry registry = LocateRegistry.getRegistry(host,port);
             repository = (IPartRepository) registry.lookup(repositoryName);
             System.out.println("Conectado com o servidor: " + repositoryName);
         }catch(Exception e){
-            System.out.println("Não foi possível se conectar com o servidor");
-            e.printStackTrace();
+            System.out.println("Não foi possível se conectar com o servidor: "+e.getMessage());
             System.exit(0);
         }
     }
@@ -142,7 +143,7 @@ public class Client {
                 }
                 System.out.println("\n");
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Erro: "+e.getMessage());
                 System.exit(0);
             }
         }
