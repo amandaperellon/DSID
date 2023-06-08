@@ -12,27 +12,28 @@ import java.util.UUID;
 public class Client {
     private static IPartRepository repository;
     private static final Scanner sc = new Scanner(System.in);
-    private static String host;
     private static IPart part;
     private static final HashMap<IPart, Integer> subpart = new HashMap<>();
 
     public static void main(String[] args) {
-        host = (args.length < 1) ? null : args[0];
         try{
-            startServer();
+            boolean server = false;
+            while(!server) {
+                server = startServer();
+            }
             menu();
             commands();
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("Erro: "+e.getMessage());
             System.exit(0);
         }
     }
 
-    public static void startServer(){
+    public static boolean startServer(){
         try {
             System.out.print("Entre com a ip do servidor: ");
-            host = sc.nextLine();
-            System.out.print("Entre com o nome do server que deseja se conectar: ");
+            String host = sc.nextLine();
+            System.out.print("Entre com o nome do servidor: ");
             String repositoryName = sc.nextLine();
             System.out.print("Entre com a porta do servidor: ");
             int port = Integer.parseInt(sc.nextLine());
@@ -40,9 +41,10 @@ public class Client {
             Registry registry = LocateRegistry.getRegistry(host,port);
             repository = (IPartRepository) registry.lookup(repositoryName);
             System.out.println("Conectado com o servidor: " + repositoryName);
+            return true;
         }catch(Exception e){
             System.out.println("Não foi possível se conectar com o servidor: "+e.getMessage());
-            System.exit(0);
+            return false;
         }
     }
 
@@ -146,7 +148,6 @@ public class Client {
                 System.out.println("\n");
             } catch (Exception e) {
                 System.out.println("Erro: "+e.getMessage());
-                System.exit(0);
             }
         }
     }
